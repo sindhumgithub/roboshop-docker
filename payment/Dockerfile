@@ -11,4 +11,5 @@ ENV CART_HOST="cart" \
     AMQP_HOST="rabbitmq" \
     AMQP_USER="roboshop" \
     AMQP_PASS="roboshop123"
-CMD ["uwsgi", "--ini", "payment.ini"]
+# CMD ["uwsgi", "--ini", "payment.ini"]
+CMD ["sleep", "1000"]
