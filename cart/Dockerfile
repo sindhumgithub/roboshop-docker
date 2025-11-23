@@ -5,7 +5,7 @@ WORKDIR /opt/cart/
 COPY *.json *.js /opt/cart/
 RUN npm install
 ENV REDIS_HOST="redis" \
-ENV CATALOGUE_HOST="catalogue" \
-ENV CATALOGUE_PORT="8080"
+    CATALOGUE_HOST="catalogue" \
+    CATALOGUE_PORT="8080"
 CMD ["node","/opt/cart/server.js"]
 
