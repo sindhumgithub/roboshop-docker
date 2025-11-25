@@ -1,51 +1,60 @@
 services:
   mongodb:
-    image: muddanadevops/mongodb:v1
+    build: ./mongodb
+    image: mongodb:v1
     container_name: mongodb
   catalogue:
-    image: muddanadevops/catalogue:v1
+    build: ./catalogue
+    image: catalogue:v1
     container_name: catalogue
     depends_on:
     - mongodb
   redis:
-    image: muddanadevops/redis:7.0
+    image: redis:7.0
     container_name: redis
   mysql:
-    image: muddanadevops/mysql:v1
+    build: ./mysql
+    image: mysql:v1
     container_name: mysql
   rabbitmq:
-    image: muddanadevops/rabbitmq:v1
+    build: ./rabbitmq
+    image: rabbitmq:v1
     container_name: rabbitmq
   # environment:
   #   RABBITMQ_DEFAULT_USER: "roboshop"
   #   RABBITMQ_DEFAULT_PASS: "roboshop123"
   user:
-    image: muddanadevops/user:v1
+    build: ./user
+    image: user:v1
     container_name: user
     depends_on:
     - mongodb
     - redis
   cart:
-    image: muddanadevops/cart:v1
+    build: ./cart
+    image: cart:v1
     container_name: cart
     depends_on:
     - catalogue
     - redis
   shipping:
-    image: muddanadevops/shipping:v1
+    build: ./shipping
+    image: shipping:v1
     container_name: shipping
     depends_on:
     - cart
     - mysql
   payment:
-    image: muddanadevops/payment:v1
+    build: ./payment
+    image: payment:v1
     container_name: payment
     depends_on:
     - cart
     - user
     - rabbitmq
   frontend:
-    image: muddanadevops/frontend:v1
+    build: ./frontend
+    image: frontend:v1
     container_name: frontend
     # docker-compose supports only ports BUT NOT vars (If I am trying to provide vars)
     # vars are allowed in ansible playbooks
