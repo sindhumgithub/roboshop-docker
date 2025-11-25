@@ -1,8 +1,10 @@
 services:
   mongodb:
-    build: ./mongodb
+    build: ./mongodb  # build is used to look for ./mongodb dockerfile inside my local docker repository.
     image: mongodb:v1
     container_name: mongodb
+    volumes: 
+    - mongodb: /data/db
   catalogue:
     build: ./catalogue
     image: catalogue:v1
@@ -12,14 +14,20 @@ services:
   redis:
     image: redis:7.0
     container_name: redis
+    volumes: 
+    - redis: /data
   mysql:
     build: ./mysql
     image: mysql:v1
     container_name: mysql
+    volumes: 
+    - mysql: /var/lib/mysql
   rabbitmq:
     build: ./rabbitmq
     image: rabbitmq:v1
     container_name: rabbitmq
+    volumes:
+    - rabbitmq: /var/lib/rabbitmq
   # environment:
   #   RABBITMQ_DEFAULT_USER: "roboshop"
   #   RABBITMQ_DEFAULT_PASS: "roboshop123"
@@ -72,7 +80,12 @@ networks:
     name: roboshop
     external: false  # true if you have created n/w manually using docker n/w command
                      #  false if I am creating docker n/w using  docker-compose.yaml file
-    
+volumes: 
+  mongodb:    # it is equaivalent to "docker volume create mongodb" command 
+  redis:
+  mysql:
+  rabbitmq:
+  
 
 
 
