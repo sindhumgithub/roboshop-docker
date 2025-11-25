@@ -70,7 +70,8 @@ networks:
   default:
     driver: bridge
     name: roboshop
-    external: true  # true if you have created n/w manually using docker n/w command
+    external: false  # true if you have created n/w manually using docker n/w command
+                     #  false if I am creating docker n/w using  docker-compose.yaml file
     
 
 
