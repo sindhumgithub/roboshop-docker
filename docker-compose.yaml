@@ -2,11 +2,67 @@ services:
   mongodb:
     image: mongodb:v1
     container_name: mongodb
+  catalogue:
+    image: catalogue:v1
+    container_name: catalogue
+    depends_on:
+    - mongodb
+  redis:
+    image: redis:7.0
+    container_name: redis
+  mysql:
+    image: mysql:v1
+    container_name: mysql
+  rabbitmq:
+    image: rabbitmq:v1
+    container_name: rabbitmq
+  # environment:
+  #   RABBITMQ_DEFAULT_USER: "roboshop"
+  #   RABBITMQ_DEFAULT_PASS: "roboshop123"
+  user:
+    image: user:v1
+    container_name: user
+    depends_on:
+    - mongodb
+    - redis
+  cart:
+    image: cart:v1
+    container_name: cart
+    depends_on:
+    - catalogue
+    - redis
+  shipping:
+    image: shipping:v1
+    container_name: shipping
+    depends_on:
+    - cart
+    - mysql
+  payment:
+    image: payment:v1
+    container_name: payment
+    depends_on:
+    - cart
+    - user
+    - rabbitmq
+  frontend:
+    image: frontend:v1
+    container_name: frontend
+    # docker-compose supports only ports BUT NOT vars (If I am trying to provide vars)
+    # vars are allowed in ansible playbooks
+    ports:  
+      - "8012:80"
+    depends_on:
+    - catalogue
+    - user
+    - cart
+    - shipping
+    - payment  
 networks:
   default:
     driver: bridge
     name: roboshop
     external: true  # true if you have created n/w manually using docker n/w command
+    
 
 
 
