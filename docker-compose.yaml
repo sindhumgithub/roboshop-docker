@@ -68,6 +68,12 @@ services:
     # vars are allowed in ansible playbooks
     ports:  
       - "8012:80"
+    environment:
+      CATALOGUE_URL: "http://catalogue:8080"
+      USER_URL: "http://user:8080"
+      CART_URL: "http://cart:8080"
+      SHIPPING_URL: "http://shipping:8080"
+      PAYMENT_URL: "http://payment:8080"
     depends_on:
     - catalogue
     - user
