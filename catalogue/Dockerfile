@@ -9,7 +9,7 @@ RUN npm install
 #Docker code to RUN the container.
 FROM node:20.19.5-alpine3.22
 WORKDIR /opt/catalogue/
-COPY --from=build /opt/catalogue/
+COPY --from=build /opt/catalogue/ /opt/catalogue/
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
 CMD ["node","/opt/catalogue/server.js"]
