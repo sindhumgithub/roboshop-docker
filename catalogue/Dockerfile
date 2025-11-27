@@ -13,7 +13,7 @@ FROM node:20.19.5-alpine3.22
 # Create same user and group in final stage
 RUN addgroup -S roboshop && \
     adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop
-USER rboshop
+USER roboshop
 WORKDIR /opt/catalogue/
 COPY --from=build /opt/catalogue/ /opt/catalogue/
 ENV MONGO="true" \
