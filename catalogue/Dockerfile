@@ -1,15 +1,17 @@
 #Build & Compile your IMAGE
 FROM node:20.19.5-alpine3.22 as build
-RUN adduser -D -h /opt/catalogue/ -s /sbin/nologin roboshop
-USER roboshop
+# Create same user and group in Buil stage
+RUN addgroup -S roboshop && \
+    adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop
 WORKDIR /opt/catalogue/
 COPY *.json *.js /opt/catalogue/
 RUN npm install
 
 #Docker code to RUN the container.
 FROM node:20.19.5-alpine3.22
-RUN adduser -D -h /opt/catalogue/ -s /sbin/nologin roboshop
-USER roboshop
+# Create same user and group in final stage
+RUN addgroup -S roboshop && \
+    adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop
 WORKDIR /opt/catalogue/
 COPY --from=build /opt/catalogue/ /opt/catalogue/
 ENV MONGO="true" \
