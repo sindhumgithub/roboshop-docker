@@ -28,9 +28,9 @@ services:
     container_name: rabbitmq
     volumes:
     - rabbitmq:/var/lib/rabbitmq
-  # environment:
-  #   RABBITMQ_DEFAULT_USER: "roboshop"
-  #   RABBITMQ_DEFAULT_PASS: "roboshop123"
+  environment:
+    RABBITMQ_DEFAULT_USER: "roboshop"
+    RABBITMQ_DEFAULT_PASS: "roboshop123"
   user:
     build: ./user
     image: user:v1
