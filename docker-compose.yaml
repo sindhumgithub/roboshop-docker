@@ -64,10 +64,10 @@ services:
     build: ./frontend
     image: frontend:v1
     container_name: frontend
-    # docker-compose supports only ports BUT NOT vars (If I am trying to provide vars)
+ # docker-compose supports only ports BUT NOT vars (If I am trying to provide vars)
     # vars are allowed in ansible playbooks
     ports:  
-      - "8012:80"
+      - "80:80"
     depends_on:
     - catalogue
     - user
