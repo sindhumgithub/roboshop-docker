@@ -8,6 +8,8 @@ RUN npm install
 
 #Docker code to RUN the container.
 FROM node:20.19.5-alpine3.22
+RUN adduser -D -h /opt/catalogue/ -s /sbin/nologin roboshop
+USER roboshop
 WORKDIR /opt/catalogue/
 COPY --from=build /opt/catalogue/ /opt/catalogue/
 ENV MONGO="true" \
