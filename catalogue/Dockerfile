@@ -1,10 +1,5 @@
 #Build & Compile your IMAGE
 FROM node:20.19.5-alpine3.22 as build
-# Create same user and group in Buil stage
-RUN addgroup -S roboshop && \
-    adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop
-USER roboshop
-WORKDIR /opt/catalogue/
 COPY *.json *.js /opt/catalogue/
 RUN npm install
 
@@ -12,7 +7,8 @@ RUN npm install
 FROM node:20.19.5-alpine3.22
 # Create same user and group in final stage
 RUN addgroup -S roboshop && \
-    adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop
+    adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop && \
+    chown -R roboshop:roboshop /opt/catalogue
 EXPOSE 8080
 LABEL project_name="Roboshop" \
       components="catalogue" \
@@ -21,9 +17,9 @@ WORKDIR /opt/catalogue/
 COPY --from=build /opt/catalogue/ /opt/catalogue/
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
-RUN chown -R roboshop:roboshop /opt/catalogue
 USER roboshop
 CMD ["node","/opt/catalogue/server.js"]
+
 
 ###########################################################
 # FROM node:20
