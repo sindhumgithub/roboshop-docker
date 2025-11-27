@@ -8,13 +8,13 @@ RUN npm install
 FROM node:20.19.5-alpine3.22
 # Create same user and group in final stage
 RUN addgroup -S roboshop && \
-    adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop && \
+    adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop 
 EXPOSE 8080
 LABEL project_name="Roboshop" \
       components="catalogue" \
       created_by="Sindhuja"
 WORKDIR /opt/catalogue/
-COPY --from=build --chown -R roboshop:roboshop /opt/catalogue/ /opt/catalogue/
+COPY --from=build --chown=roboshop:roboshop /opt/catalogue/ /opt/catalogue/
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
 USER roboshop
