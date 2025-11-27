@@ -13,11 +13,12 @@ FROM node:20.19.5-alpine3.22
 # Create same user and group in final stage
 RUN addgroup -S roboshop && \
     adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop
-USER roboshop
 WORKDIR /opt/catalogue/
 COPY --from=build /opt/catalogue/ /opt/catalogue/
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
+RUN chown -R roboshop:roboshop /opt/catalogue
+USER roboshop
 CMD ["node","/opt/catalogue/server.js"]
 
 ###########################################################
