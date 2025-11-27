@@ -1,9 +1,9 @@
 services:
   mongodb:
-    build: ./mongodb  # build is used to look for ./mongodb dockerfile inside my local docker repository.
+    build: ./mongodb # build is used to look for ./mongodb dockerfile inside my local docker repository.
     image: mongodb:v1
     container_name: mongodb
-    volumes: 
+    volumes:
     - mongodb:/data/db
   catalogue:
     build: ./catalogue
@@ -14,13 +14,13 @@ services:
   redis:
     image: redis:7.0
     container_name: redis
-    volumes: 
+    volumes:
     - redis:/data
   mysql:
     build: ./mysql
     image: mysql:v1
     container_name: mysql
-    volumes: 
+    volumes:
     - mysql:/var/lib/mysql
   rabbitmq:
     build: ./rabbitmq
@@ -66,27 +66,23 @@ services:
     container_name: frontend
  # docker-compose supports only ports BUT NOT vars (If I am trying to provide vars)
     # vars are allowed in ansible playbooks
-    ports:  
+    ports:
       - "80:80"
     depends_on:
     - catalogue
     - user
+    - user
     - cart
     - shipping
-    - payment  
+    - payment
 networks:
   default:
     driver: bridge
     name: roboshop
-    external: false  # true if you have created n/w manually using docker n/w command
-                     #  false if I am creating docker n/w using  docker-compose.yaml file
-volumes: 
-  mongodb:    # it is equaivalent to "docker volume create mongodb" command 
+    external: false # true if you have created n/w manually using docker n/w command
+                     # false if I am creating docker n/w using docker-compose.yaml file
+volumes:
+  mongodb: # it is equaivalent to "docker volume create mongodb" command
   redis:
   mysql:
   rabbitmq:
-  
-
-
-
-
