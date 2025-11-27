@@ -1,5 +1,5 @@
 FROM node:20.19.5-alpine3.22
-RUN useradd --system --home /opt/catalogue/ --shell /sbin/nologin --comment "roboshop system user" roboshop
+RUN adduser --system --home /opt/catalogue/ --shell /sbin/nologin --comment "roboshop system user" roboshop
 USER roboshop
 WORKDIR /opt/catalogue/
 COPY *.json *.js /opt/catalogue/
