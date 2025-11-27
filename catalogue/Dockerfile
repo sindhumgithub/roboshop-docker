@@ -1,5 +1,6 @@
 #Build & Compile your IMAGE
 FROM node:20.19.5-alpine3.22 as build
+WORKDIR /opt/catalogue
 COPY *.json *.js /opt/catalogue/
 RUN npm install
 
