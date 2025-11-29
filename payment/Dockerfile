@@ -5,7 +5,7 @@ RUN apk add --no-cache \
     build-base \
     linux-headers \
     pcre-dev 
-COPY appcode/requirements.txt ./
+COPY *.py *.ini *.txt/requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 
