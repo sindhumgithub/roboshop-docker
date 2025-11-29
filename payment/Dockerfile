@@ -3,10 +3,10 @@ FROM python:3.9.25-alpine3.21 AS build
 WORKDIR /opt/payment/
 # uwsgi dependency files. Use during Image building..
 RUN apk add --no-cache \
-        uwsgi \
-        uwsgi-python3 \
-        python3 \
-    && rm -rf /var/cache/apk/*
+    build-base \
+    linux-headers \
+    pcre-dev 
+COPY appcode/requirements.txt ./
 COPY *.py *.ini *.txt /opt/payment/
 
 #Docker code to RUN the container.
