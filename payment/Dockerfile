@@ -1,10 +1,10 @@
 #Build & Compile your IMAGE
-FROM python:3.10 AS build
+FROM python:3.9.25-alpine3.21 AS builder
 WORKDIR /opt/payment/
 COPY *.py *.ini *.txt /opt/payment/
 
 #Docker code to RUN the container.
-FROM python:3.10
+FROM python:3.9.25-alpine3.21
 EXPOSE 8080
 RUN addgroup -S roboshop && \
     adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop 
