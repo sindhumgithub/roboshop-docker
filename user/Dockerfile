@@ -12,7 +12,7 @@ RUN addgroup -S roboshop && \
     adduser -S -G roboshop -h /opt/user -s /sbin/nologin roboshop 
 EXPOSE 8080
 LABEL project_name="Roboshop" \
-      components="catalogue" \
+      components="user" \
       created_by="Sindhuja"
 WORKDIR /opt/user/
 COPY --from=build --chown=roboshop:roboshop /opt/user/ /opt/user/
