@@ -17,7 +17,7 @@ FROM python:3.9.25-alpine3.21
 EXPOSE 8080
 WORKDIR /opt/payment/
 # Runtime deps only
-RUN apk add --no-cache pcre
+RUN apk add --no-cache pcre libstdc++
 # Create normal user.
 RUN addgroup -S roboshop && \
     adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop 
