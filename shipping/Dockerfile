@@ -18,7 +18,7 @@ LABEL project_name="Roboshop" \
       components="shipping" \
       created_by="Sindhuja"
 WORKDIR /opt/shipping
-COPY --from=builder --chown=roboshop:roboshop /opt/server/shipping.jar .
+COPY --from=build --chown=roboshop:roboshop /opt/server/shipping.jar .
 ENV CART_ENDPOINT="cart:8080" \
     DB_HOST="mysql"
 CMD ["java","-jar","/opt/shipping/shipping.jar"]
