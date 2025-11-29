@@ -27,7 +27,7 @@ COPY --from=build /usr/local /usr/local
 # Runtime deps only
 RUN apk add --no-cache pcre
 RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
-COPY --chown=roboshop:roboshop appcode/ /opt/payment/
+COPY --chown=roboshop:roboshop *.py *.ini *.txt /opt/payment/
 USER roboshop
 ENTRYPOINT ["uwsgi"]
 CMD ["--ini", "payment.ini"]
