@@ -28,10 +28,6 @@ USER nginx
 CMD ["nginx", "-g", "daemon off;"]
 
 
-
-
-
-
 # FROM nginx:1.24
 # RUN rm -rf /usr/share/nginx/html/* && \
 #     rm -rf /etc/nginx/conf.d/default.conf && \

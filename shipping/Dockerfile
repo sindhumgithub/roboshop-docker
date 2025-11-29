@@ -21,7 +21,7 @@ WORKDIR /opt/shipping
 COPY --from=build --chown=roboshop:roboshop /opt/shipping/shipping.jar .
 ENV CART_ENDPOINT="cart:8080" \
     DB_HOST="mysql"
-CMD ["java","-jar","/opt/shipping/shipping.jar"]
+CMD ["java", "-jar", "/opt/shipping/shipping.jar", "||", "sleep", "30"]
 
 
 ##############################################################################
