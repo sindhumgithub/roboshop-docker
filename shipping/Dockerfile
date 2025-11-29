@@ -8,10 +8,11 @@ RUN mvn clean package && \
 
 
 #Docker code to RUN the container.
-FROM maven:3.5
+FROM eclipse-temurin:17-jre-alpine
 RUN useradd --system --home /opt/shipping/ --shell /sbin/nologin --comment "roboshop system user" roboshop
 USER roboshop
 EXPOSE 8080
+WORKDIR /opt/shipping
 COPY --from=build --chown=roboshop:roboshop /opt/shipping/ /opt/shipping/
 ENV CART_ENDPOINT="cart:8080" \
     DB_HOST="mysql"
