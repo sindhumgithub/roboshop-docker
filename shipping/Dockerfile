@@ -1,5 +1,5 @@
 #Build & Compile your IMAGE
-FROM maven:3.5 as build
+FROM maven:3.5 AS builder
 WORKDIR /opt/shipping
 COPY *.xml /opt/shipping/ 
 COPY src /opt/shipping/src/
