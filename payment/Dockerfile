@@ -1,17 +1,16 @@
 #Build & Compile your IMAGE
 FROM python:3.9.25-alpine3.21 AS build
 WORKDIR /opt/payment/
-# uwsgi dependency files. Use during Image building..
-RUN apk add --no-cache build-base linux-headers pcre-dev
 # Copy requirements first (best for caching)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-COPY appcode/requirements.txt ./
 COPY *.py *.ini *.txt /opt/payment/
 
 
 #Docker code to RUN the container.
 FROM python:3.9.25-alpine3.21
+# Install only the runtime binary of uWSGI (very small)
+RUN apk add --no-cache uwsgi uwsgi-python3
 EXPOSE 8080
 RUN addgroup -S roboshop && \
     adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop 
