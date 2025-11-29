@@ -1,5 +1,6 @@
+# To create frontend as Normal user 
 FROM nginx:1.27-alpine
-RUN rm /etc/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+RUN rm -f /etc/nginx/conf.d/default.conf
 
 #install nginx
 RUN mkdir -p /var/cache/nginx/client_temp && \
@@ -20,6 +21,9 @@ RUN touch /var/run/nginx.pid && \
         chown -R nginx:nginx /var/run/nginx.pid /run/nginx.pid
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY static/ /usr/share/nginx/html/
+RUN chown -R nginx:nginx /var/cache/nginx /var/log/nginx /var/run/nginx.pid \
+    && mkdir -p /etc/nginx/ssl \
+    && chown -R nginx:nginx /etc/nginx/ssl
 USER nginx
 CMD ["nginx", "-g", "daemon off;"]
 
