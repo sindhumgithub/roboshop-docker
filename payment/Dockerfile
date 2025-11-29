@@ -3,8 +3,7 @@ FROM python:3.9.25-alpine3.21 AS build
 WORKDIR /opt/payment/
 # Copy requirements first (best for caching)
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY *.py *.ini *.txt /opt/payment/
+RUN pip install --no-cache-dir --user -r requirements.txt
 
 
 #Docker code to RUN the container.
@@ -16,7 +15,10 @@ RUN addgroup -S roboshop && \
     adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop 
 USER roboshop
 WORKDIR /opt/payment/
-COPY --from=build --chown=roboshop:roboshop /opt/payment/ /opt/payment/
+# Copy installed Python packages from build stage
+COPY --from=build --chown=roboshop:roboshop \
+     /root/.local /home/roboshop/.local
+COPY --chown=roboshop:roboshop *.py *.ini *.txt /opt/payment/
 ENV CART_HOST="cart" \
     CART_PORT="8080" \
     USER_HOST="user" \
