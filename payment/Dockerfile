@@ -1,5 +1,5 @@
 #Build & Compile your IMAGE
-FROM python:3.9.25-alpine3.21 AS builder
+FROM python:3.9.25-alpine3.21 AS build
 WORKDIR /opt/payment/
 COPY *.py *.ini *.txt /opt/payment/
 
