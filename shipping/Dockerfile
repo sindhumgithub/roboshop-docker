@@ -9,9 +9,14 @@ RUN mvn clean package && \
 
 #Docker code to RUN the container.
 FROM eclipse-temurin:17-jre-alpine
-RUN useradd --system --home /opt/shipping/ --shell /sbin/nologin --comment "roboshop system user" roboshop
+# Create same user and group in final stage
+RUN addgroup -S roboshop && \
+    adduser -S -G roboshop -h /opt/shipping -s /sbin/nologin roboshop 
 USER roboshop
 EXPOSE 8080
+LABEL project_name="Roboshop" \
+      components="shipping" \
+      created_by="Sindhuja"
 WORKDIR /opt/shipping
 COPY --from=build --chown=roboshop:roboshop /opt/shipping/ /opt/shipping/
 ENV CART_ENDPOINT="cart:8080" \
