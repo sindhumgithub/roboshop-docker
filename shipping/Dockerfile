@@ -1,5 +1,5 @@
 #Build & Compile your IMAGE
-FROM maven:3.5 AS builder
+FROM maven:3.5 as build
 WORKDIR /opt/shipping
 COPY *.xml /opt/shipping/ 
 COPY src /opt/shipping/src/
@@ -18,7 +18,7 @@ LABEL project_name="Roboshop" \
       components="shipping" \
       created_by="Sindhuja"
 WORKDIR /opt/shipping
-COPY --from=build --chown=roboshop:roboshop /opt/shipping/ /opt/shipping/
+COPY --from=builder --chown=roboshop:roboshop /opt/server/shipping.jar .
 ENV CART_ENDPOINT="cart:8080" \
     DB_HOST="mysql"
 CMD ["java","-jar","/opt/shipping/shipping.jar"]
