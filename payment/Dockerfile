@@ -1,21 +1,30 @@
-FROM python:3.9.25-alpine3.22 AS build
+#Build & Compile your IMAGE
+FROM python:3.9.25-alpine3.21 AS builder
 WORKDIR /opt/payment
-# uWSGI build prerequisites
+# Build deps for uwsgi & friends
 RUN apk add --no-cache \
     build-base \
     linux-headers \
-    pcre-dev 
-COPY *.py *.ini *.txt/requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt
+    pcre-dev
+# Only requirements first for caching
+COPY requirements.txt .
+# Install into /install (just like you did)
+RUN pip3 install --prefix=/install -r requirements.txt
 
 
-
-FROM python:3.9.25-alpine3.22
-EXPOSE 8080/tcp
-WORKDIR /opt/payment
-LABEL com.project="roboshop" \
-      component="payment" \
-      created_by="Dheeraj"
+#Docker code to RUN the container.
+FROM python:3.9.25-alpine3.21
+EXPOSE 8080
+WORKDIR /opt/payment/
+# Runtime deps only
+RUN apk add --no-cache pcre libstdc++
+# Create normal user.
+RUN addgroup -S roboshop && \
+    adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop 
+USER roboshop
+# Copy installed packages from build stage
+COPY --from=builder /install /usr/local
+COPY --chown=roboshop:roboshop *.py *.ini *.txt /opt/payment/
 ENV CART_HOST="cart" \
     CART_PORT="8080" \
     USER_HOST="user" \
@@ -23,63 +32,7 @@ ENV CART_HOST="cart" \
     AMQP_HOST="rabbitmq" \
     AMQP_USER="roboshop" \
     AMQP_PASS="roboshop123"
-COPY --from=build /usr/local /usr/local
-# Runtime deps only
-RUN apk add --no-cache pcre
-RUN addgroup -S roboshop && adduser -S -G roboshop roboshop
-COPY --chown=roboshop:roboshop *.py *.ini *.txt /opt/payment/
-USER roboshop
-ENTRYPOINT ["uwsgi"]
-CMD ["--ini", "payment.ini"]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# #Build & Compile your IMAGE
-# FROM python:3.9.25-alpine3.21 AS builder
-# WORKDIR /opt/payment
-# # Build deps for uwsgi & friends
-# RUN apk add --no-cache \
-#     build-base \
-#     linux-headers \
-#     pcre-dev
-# # Only requirements first for caching
-# COPY requirements.txt .
-# # Install into /install (just like you did)
-# RUN pip3 install --prefix=/install -r requirements.txt
-
-
-# #Docker code to RUN the container.
-# FROM python:3.9.25-alpine3.21
-# EXPOSE 8080
-# WORKDIR /opt/payment/
-# # Runtime deps only
-# RUN apk add --no-cache pcre libstdc++
-# # Create normal user.
-# RUN addgroup -S roboshop && \
-#     adduser -S -G roboshop -h /opt/catalogue -s /sbin/nologin roboshop 
-# USER roboshop
-# # Copy installed packages from build stage
-# COPY --from=builder /install /usr/local
-# COPY --chown=roboshop:roboshop *.py *.ini *.txt /opt/payment/
-# ENV CART_HOST="cart" \
-#     CART_PORT="8080" \
-#     USER_HOST="user" \
-#     USER_PORT="8080" \
-#     AMQP_HOST="rabbitmq" \
-#     AMQP_USER="roboshop" \
-#     AMQP_PASS="roboshop123"
-# CMD ["uwsgi", "--ini", "payment.ini"]
+CMD ["uwsgi", "--ini", "payment.ini"]
 
 
 
